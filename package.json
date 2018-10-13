@@ -1,0 +1,25 @@
+{
+  "name": "@draws/engine",
+  "version": "0.0.2",
+  "description": "Manage draws",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf build && tsc",
+    "build-publish": "sh scripts/publish.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inker/draws-engine"
+  },
+  "keywords": [
+    "draw",
+    "engine"
+  ],
+  "author": "Anton Veselyev",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.1.3"
+  }
+}
