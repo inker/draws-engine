@@ -1,8 +1,9 @@
-import Predicate from './types/Predicate'
-
-export {
-  Predicate,
-}
+export type Predicate<T> = (
+  picked: T,
+  groupIndex: number,
+  currentPotIndex: number,
+  groups: T[][],
+) => boolean
 
 export const allPossibleGroups = <T>(
   pots: T[][],
@@ -42,7 +43,7 @@ function groupPredicate<T>(
 ): boolean {
   const newGroups = groups.slice()
   const oldGroup = newGroups[groupNum]
-  newGroups[groupNum] = [...oldGroup, picked]
+  newGroups[groupNum] = [picked, ...oldGroup]
   return groupIsPossible(pots, newGroups, currentPotIndex, predicate)
 }
 
@@ -56,10 +57,8 @@ function groupIsPossible<T>(
     return true
   }
   const newPots = pots.slice()
-  const oldPot = newPots[currentPotIndex]
-  const oldPotCopy = [...oldPot]
-  const picked = oldPotCopy.pop()
-  newPots[currentPotIndex] = oldPotCopy
+  const [picked, ...remainingItems] = newPots[currentPotIndex]
+  newPots[currentPotIndex] = remainingItems
   return filterGroups(groups, picked, currentPotIndex, predicate)
     .some(groupNum => groupPredicate(newPots, groups, picked, groupNum, currentPotIndex, predicate))
 }

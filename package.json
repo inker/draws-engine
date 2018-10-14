@@ -1,6 +1,6 @@
 {
   "name": "@draws/engine",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Manage draws",
   "main": "build/index.js",
   "types": "build/index.d.ts",
