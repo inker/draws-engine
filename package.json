@@ -2,11 +2,11 @@
   "name": "@draws/engine",
   "version": "0.1.3",
   "description": "Manage draws",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "build": "rm -rf build && tsc",
+    "build": "rm -rf dist && tsc",
     "release": "np"
   },
   "repository": {
