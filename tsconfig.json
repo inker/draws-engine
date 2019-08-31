@@ -10,7 +10,7 @@
         "alwaysStrict": true,
         "strictBindCallApply": true,
         "strictNullChecks": true,
-        "outDir": "build"
+        "outDir": "dist"
     },
     "exclude": [ "node_modules", "test" ]
 }
