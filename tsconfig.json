@@ -14,7 +14,7 @@
     "lib": [
       "es2018"
     ],
-    "outDir": "dist"
+    "outDir": "build"
   },
   "exclude": [
     "node_modules",
