@@ -1,16 +1,23 @@
 {
-    "compilerOptions": {
-        "target": "es2018",
-        "module": "commonjs",
-        "sourceMap": true,
-        // "watch": true,
-        "pretty": true,
-        "lib": [ "dom", "es7" ],
-        "declaration": true,
-        "alwaysStrict": true,
-        "strictBindCallApply": true,
-        "strictNullChecks": true,
-        "outDir": "dist"
-    },
-    "exclude": [ "node_modules", "test" ]
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "sourceMap": true,
+    "pretty": true,
+    "declaration": true,
+    "alwaysStrict": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "downlevelIteration": true,
+    "lib": [
+      "es2018"
+    ],
+    "outDir": "dist"
+  },
+  "exclude": [
+    "node_modules",
+    "test"
+  ]
 }
