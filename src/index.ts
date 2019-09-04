@@ -1,31 +1,15 @@
 import notEmpty from './utils/notEmpty'
 
+type ReadonlyDoubleArray<T> = readonly (readonly T[])[]
+
 export type Predicate<T> = (
   picked: T,
-  groups: T[][],
+  groups: ReadonlyDoubleArray<T>,
   groupIndex: number,
 ) => boolean
 
-export const allPossibleGroups = <T>(
-  pots: T[][],
-  groups: T[][],
-  picked: T,
-  predicate: Predicate<T>,
-) =>
-  filterGroups(groups, picked, predicate)
-    .filter(groupNum => groupPredicate(pots, groups, picked, groupNum, predicate))
-
-export const firstPossibleGroup = <T>(
-  pots: T[][],
-  groups: T[][],
-  picked: T,
-  predicate: Predicate<T>,
-) =>
-  filterGroups(groups, picked, predicate)
-    .find(groupNum => groupPredicate(pots, groups, picked, groupNum, predicate))
-
 const filterGroups = <T>(
-  groups: T[][],
+  groups: ReadonlyDoubleArray<T>,
   picked: T,
   predicate: Predicate<T>,
 ) =>
@@ -33,8 +17,8 @@ const filterGroups = <T>(
     .filter(i => predicate(picked, groups, i))
 
 function groupPredicate<T>(
-  pots: T[][],
-  groups: T[][],
+  pots: ReadonlyDoubleArray<T>,
+  groups: ReadonlyDoubleArray<T>,
   picked: T,
   groupNum: number,
   predicate: Predicate<T>,
@@ -46,8 +30,8 @@ function groupPredicate<T>(
 }
 
 function groupIsPossible<T>(
-  pots: T[][],
-  groups: T[][],
+  pots: ReadonlyDoubleArray<T>,
+  groups: ReadonlyDoubleArray<T>,
   predicate: Predicate<T>,
 ) {
   const currentPotIndex = pots.findIndex(notEmpty)
@@ -61,3 +45,21 @@ function groupIsPossible<T>(
   return filterGroups(groups, picked, predicate)
     .some(groupNum => groupPredicate(newPots, groups, picked, groupNum, predicate))
 }
+
+export const allPossibleGroups = <T>(
+  pots: ReadonlyDoubleArray<T>,
+  groups: ReadonlyDoubleArray<T>,
+  picked: T,
+  predicate: Predicate<T>,
+) =>
+  filterGroups(groups, picked, predicate)
+    .filter(groupNum => groupPredicate(pots, groups, picked, groupNum, predicate))
+
+export const firstPossibleGroup = <T>(
+  pots: ReadonlyDoubleArray<T>,
+  groups: ReadonlyDoubleArray<T>,
+  picked: T,
+  predicate: Predicate<T>,
+) =>
+  filterGroups(groups, picked, predicate)
+    .find(groupNum => groupPredicate(pots, groups, picked, groupNum, predicate))
