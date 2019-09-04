@@ -1,4 +1,6 @@
 import notEmpty from './utils/notEmpty'
+import modifyAt from './utils/modifyAt'
+import cons from './utils/cons'
 
 type ReadonlyDoubleArray<T> = readonly (readonly T[])[]
 
@@ -16,20 +18,18 @@ const filterGroups = <T>(
   groups.map((item, i) => i)
     .filter(i => predicate(picked, groups, i))
 
-function groupPredicate<T>(
+const groupIsPossibleByIndex = <T>(
   pots: ReadonlyDoubleArray<T>,
   groups: ReadonlyDoubleArray<T>,
   picked: T,
-  groupNum: number,
   predicate: Predicate<T>,
-): boolean {
-  const newGroups = groups.slice()
-  const oldGroup = newGroups[groupNum]
-  newGroups[groupNum] = [picked, ...oldGroup]
-  return groupIsPossible(pots, newGroups, predicate)
-}
+) =>
+  (groupNum: number): boolean => {
+    const newGroups = modifyAt(groups, groupNum, cons(picked))
+    return groupsArePossible(pots, newGroups, predicate)
+  }
 
-function groupIsPossible<T>(
+function groupsArePossible<T>(
   pots: ReadonlyDoubleArray<T>,
   groups: ReadonlyDoubleArray<T>,
   predicate: Predicate<T>,
@@ -43,7 +43,7 @@ function groupIsPossible<T>(
   const [picked, ...remainingItems] = newPots[currentPotIndex]
   newPots[currentPotIndex] = remainingItems
   return filterGroups(groups, picked, predicate)
-    .some(groupNum => groupPredicate(newPots, groups, picked, groupNum, predicate))
+    .some(groupIsPossibleByIndex(newPots, groups, picked, predicate))
 }
 
 export const allPossibleGroups = <T>(
@@ -53,7 +53,7 @@ export const allPossibleGroups = <T>(
   predicate: Predicate<T>,
 ) =>
   filterGroups(groups, picked, predicate)
-    .filter(groupNum => groupPredicate(pots, groups, picked, groupNum, predicate))
+    .filter(groupIsPossibleByIndex(pots, groups, picked, predicate))
 
 export const firstPossibleGroup = <T>(
   pots: ReadonlyDoubleArray<T>,
@@ -62,4 +62,4 @@ export const firstPossibleGroup = <T>(
   predicate: Predicate<T>,
 ) =>
   filterGroups(groups, picked, predicate)
-    .find(groupNum => groupPredicate(pots, groups, picked, groupNum, predicate))
+    .find(groupIsPossibleByIndex(pots, groups, picked, predicate))
