@@ -18,7 +18,7 @@
     "engine"
   ],
   "author": "Anton Veselyev",
-  "license": "ISC",
+  "license": "GPLv3",
   "devDependencies": {
     "np": "^5.0.3",
     "tslint": "^5.19.0",
