@@ -1,5 +1,3 @@
-import notEmpty from './utils/notEmpty'
-
 type ReadonlyDoubleArray<T> = readonly (readonly T[])[]
 
 export type Predicate<T> = (
@@ -8,42 +6,40 @@ export type Predicate<T> = (
   groupIndex: number,
 ) => boolean
 
-const filterGroups = <T>(
-  groups: ReadonlyDoubleArray<T>,
-  picked: T,
-  predicate: Predicate<T>,
-) =>
-  groups.map((item, i) => i)
-    .filter(i => predicate(picked, groups, i))
+const notEmpty = <T>(arr: readonly T[]) =>
+  arr.length > 0
 
-function groupPredicate<T>(
+function isGroupPossible<T>(
   pots: ReadonlyDoubleArray<T>,
   groups: ReadonlyDoubleArray<T>,
   picked: T,
   groupNum: number,
   predicate: Predicate<T>,
 ): boolean {
-  const newGroups = groups.slice()
-  const oldGroup = newGroups[groupNum]
-  newGroups[groupNum] = [picked, ...oldGroup]
-  return groupIsPossible(pots, newGroups, predicate)
-}
+  if (!predicate(picked, groups, groupNum)) {
+    return false
+  }
 
-function groupIsPossible<T>(
-  pots: ReadonlyDoubleArray<T>,
-  groups: ReadonlyDoubleArray<T>,
-  predicate: Predicate<T>,
-) {
   const currentPotIndex = pots.findIndex(notEmpty)
+  // If there are no empty pots remaining, do not continue, just return true
   if (currentPotIndex < 0) {
     return true
   }
 
+  // Otherwise, continue
+  // The predicate returned true, so group `groupNum` is good
+  // Put the picked item into it
+  const newGroups = groups.slice()
+  const oldGroup = newGroups[groupNum]
+  newGroups[groupNum] = [picked, ...oldGroup]
+
+  // Next, pick the head item from the current pot
   const newPots = pots.slice()
-  const [picked, ...remainingItems] = newPots[currentPotIndex]
+  const [newPicked, ...remainingItems] = newPots[currentPotIndex]
   newPots[currentPotIndex] = remainingItems
-  return filterGroups(groups, picked, predicate)
-    .some(groupNum => groupPredicate(newPots, groups, picked, groupNum, predicate))
+
+  // Determine if the picked item can be put into any group
+  return newGroups.some((_, i) => isGroupPossible(newPots, newGroups, newPicked, i, predicate))
 }
 
 export const allPossibleGroups = <T>(
@@ -52,8 +48,9 @@ export const allPossibleGroups = <T>(
   picked: T,
   predicate: Predicate<T>,
 ) =>
-  filterGroups(groups, picked, predicate)
-    .filter(groupNum => groupPredicate(pots, groups, picked, groupNum, predicate))
+    groups
+      .map((_, i) => i)
+      .filter(i => isGroupPossible(pots, groups, picked, i, predicate))
 
 export const firstPossibleGroup = <T>(
   pots: ReadonlyDoubleArray<T>,
@@ -61,5 +58,4 @@ export const firstPossibleGroup = <T>(
   picked: T,
   predicate: Predicate<T>,
 ) =>
-  filterGroups(groups, picked, predicate)
-    .find(groupNum => groupPredicate(pots, groups, picked, groupNum, predicate))
+    groups.findIndex((_, i) => isGroupPossible(pots, groups, picked, i, predicate))
