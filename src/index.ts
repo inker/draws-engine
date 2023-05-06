@@ -9,7 +9,7 @@ export type Predicate<T> = (
 const notEmpty = <T>(arr: readonly T[]) =>
   arr.length > 0
 
-function isGroupPossible<T>(
+function anyGroupPossible<T>(
   pots: ReadonlyDoubleArray<T>,
   groups: ReadonlyDoubleArray<T>,
   picked: T,
@@ -39,7 +39,7 @@ function isGroupPossible<T>(
   newPots[currentPotIndex] = remainingItems
 
   // Determine if the picked item can be put into any group
-  return newGroups.some((_, i) => isGroupPossible(newPots, newGroups, newPicked, i, predicate))
+  return newGroups.some((_, i) => anyGroupPossible(newPots, newGroups, newPicked, i, predicate))
 }
 
 export const allPossibleGroups = <T>(
@@ -50,7 +50,7 @@ export const allPossibleGroups = <T>(
 ) =>
     groups
       .map((_, i) => i)
-      .filter(i => isGroupPossible(pots, groups, picked, i, predicate))
+      .filter(i => anyGroupPossible(pots, groups, picked, i, predicate))
 
 export const firstPossibleGroup = <T>(
   pots: ReadonlyDoubleArray<T>,
@@ -58,4 +58,4 @@ export const firstPossibleGroup = <T>(
   picked: T,
   predicate: Predicate<T>,
 ) =>
-    groups.findIndex((_, i) => isGroupPossible(pots, groups, picked, i, predicate))
+    groups.findIndex((_, i) => anyGroupPossible(pots, groups, picked, i, predicate))
