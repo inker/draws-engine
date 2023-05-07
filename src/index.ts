@@ -17,7 +17,7 @@ function anyGroupPossible<T>(
     return false
   }
 
-  // If there are no empty pots remaining, do not continue, just return true
+  // If there are no empty items remaining, do not continue, just return true
   if (source.length === 0) {
     return true
   }
