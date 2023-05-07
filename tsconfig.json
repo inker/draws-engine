@@ -12,7 +12,6 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "downlevelIteration": true,
-    "resolveJsonModule": true,
     "lib": [
       "ESNext",
     ],
