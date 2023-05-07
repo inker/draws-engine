@@ -6,11 +6,8 @@ export type Predicate<T> = (
   groupIndex: number,
 ) => boolean
 
-const notEmpty = <T>(arr: readonly T[]) =>
-  arr.length > 0
-
 function anyGroupPossible<T>(
-  pots: ReadonlyDoubleArray<T>,
+  source: readonly T[],
   groups: ReadonlyDoubleArray<T>,
   picked: T,
   groupNum: number,
@@ -20,9 +17,8 @@ function anyGroupPossible<T>(
     return false
   }
 
-  const currentPotIndex = pots.findIndex(notEmpty)
   // If there are no empty pots remaining, do not continue, just return true
-  if (currentPotIndex < 0) {
+  if (source.length === 0) {
     return true
   }
 
@@ -34,12 +30,10 @@ function anyGroupPossible<T>(
   newGroups[groupNum] = [picked, ...oldGroup]
 
   // Next, pick the head item from the current pot
-  const newPots = pots.slice()
-  const [newPicked, ...remainingItems] = newPots[currentPotIndex]
-  newPots[currentPotIndex] = remainingItems
+  const [newPicked, ...newSource] = source
 
   // Determine if the picked item can be put into any group
-  return newGroups.some((_, i) => anyGroupPossible(newPots, newGroups, newPicked, i, predicate))
+  return newGroups.some((_, i) => anyGroupPossible(newSource, newGroups, newPicked, i, predicate))
 }
 
 export const allPossibleGroups = <T>(
@@ -47,15 +41,19 @@ export const allPossibleGroups = <T>(
   groups: ReadonlyDoubleArray<T>,
   picked: T,
   predicate: Predicate<T>,
-) =>
-    groups
-      .map((_, i) => i)
-      .filter(i => anyGroupPossible(pots, groups, picked, i, predicate))
+) => {
+  const source = pots.flat()
+  return groups
+    .map((_, i) => i)
+    .filter(i => anyGroupPossible(source, groups, picked, i, predicate))
+}
 
 export const firstPossibleGroup = <T>(
   pots: ReadonlyDoubleArray<T>,
   groups: ReadonlyDoubleArray<T>,
   picked: T,
   predicate: Predicate<T>,
-) =>
-    groups.findIndex((_, i) => anyGroupPossible(pots, groups, picked, i, predicate))
+) => {
+  const source = pots.flat()
+  return groups.findIndex((_, i) => anyGroupPossible(source, groups, picked, i, predicate))
+}
