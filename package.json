@@ -4,7 +4,7 @@
   "description": "Manage draws",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/esm/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "prebuild": "rm -rf dist",
