@@ -7,7 +7,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "prebuild": "rm -rf dist",
     "build:commonjs": "tsc --module CommonJS --outDir dist/cjs",
     "build:esm": "tsc --module ESNext --outDir dist/esm",
     "build": "npm run build:commonjs & npm run build:esm",
