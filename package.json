@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "build": "rm -rf dist && tsc",
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
     "release": "np"
   },
   "repository": {
