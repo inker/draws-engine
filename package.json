@@ -2,12 +2,15 @@
   "name": "@draws/engine",
   "version": "1.0.0",
   "description": "Manage draws",
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "prebuild": "rm -rf dist",
-    "build": "tsc",
+    "build:commonjs": "tsc --module CommonJS --outDir dist/cjs",
+    "build:esm": "tsc --module ESNext --outDir dist/esm",
+    "build": "npm run build:commonjs & npm run build:esm",
     "release": "np"
   },
   "repository": {
