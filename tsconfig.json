@@ -5,11 +5,7 @@
     "allowSyntheticDefaultImports": true,
     "pretty": true,
     "declaration": true,
-    "alwaysStrict": true,
-    "strictBindCallApply": true,
-    "strictNullChecks": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
+    "strict": true,
     "noUnusedLocals": true,
     "downlevelIteration": true,
     "lib": [
