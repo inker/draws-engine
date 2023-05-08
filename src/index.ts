@@ -6,6 +6,7 @@ export type Predicate<T> = (
   groupIndex: number,
 ) => boolean
 
+// eslint-disable-next-line max-params
 function anyGroupPossible<T>(
   source: readonly T[],
   groups: ReadonlyDoubleArray<T>,
