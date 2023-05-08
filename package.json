@@ -6,7 +6,7 @@
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "scripts": {
-    "lint": "eslint --ext .ts,.tsx --max-warnings=0 src",
+    "lint": "eslint --ext .ts --max-warnings=0 src",
     "test": "echo \"Error: no test specified\"",
     "prebuild": "rm -rf dist",
     "build:commonjs": "tsc --module CommonJS --outDir dist/cjs",
